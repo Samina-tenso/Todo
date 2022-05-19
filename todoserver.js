@@ -16,11 +16,12 @@ const app = http.createServer((req, res) => {
                 console.log(data)
                 if (err) {
                     console.error(err)
-                    let todos = data.toString()
-                    console.log(todos)
                 }
+                res.end(data.toString())
             })
-        } res.end()
+
+        }
+
     } else {
         res.statusCode = 404
         res.end()
