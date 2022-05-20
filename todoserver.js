@@ -13,7 +13,6 @@ const app = http.createServer((req, res) => {
             res.statusCode = 200
             res.setHeader("Content-Type", "application/json")
             fs.readFile("file.json", "utf8", (err, data) => {
-                console.log(data)
                 if (err) {
                     console.error(err)
                 }
@@ -21,12 +20,37 @@ const app = http.createServer((req, res) => {
             })
 
         }
+        if (req.method === "POST") {
 
+            req.on("data", (chunk) => {
+                const newData = chunk.toString()
+                const parsednewData = JSON.parse(newData)
+
+
+                fs.readFile("file.json", "utf8", (err, data) => {
+                    if (err) {
+                        console.log(err)
+                        return
+                    }
+                    const parsedData = JSON.parse(data)
+                    parsedData.todos.push(parsednewData)
+                    const newTodos = JSON.stringify(parsedData)
+                    fs.writeFile("file.json", newTodos, (err) => {
+                        if (err) console.log(err)
+                    })
+                })
+
+            })
+            res.end()
+
+        }
     } else {
         res.statusCode = 404
         res.end()
     }
-})
+}
+)
+
 app.listen(port, () => {
     console.log(`körs på ${port}`)
 })
