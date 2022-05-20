@@ -39,31 +39,37 @@ const app = http.createServer((req, res) => {
                 })
             })
 
-        })
+
+        }
+        if (req.method === "POST") {
+
+            req.on("data", (chunk) => {
+                const newData = chunk.toString()
+                const parsednewData = JSON.parse(newData)
+
+
+                fs.readFile("file.json", "utf8", (err, data) => {
+                    if (err) {
+                        console.log(err)
+                        return
+                    }
+                    const parsedData = JSON.parse(data)
+                    parsedData.todos.push(parsednewData)
+                    const newTodos = JSON.stringify(parsedData)
+                    fs.writeFile("file.json", newTodos, (err) => {
+                        if (err) console.log(err)
+                    })
+                })
+
+            })
+            res.end()
+
+        }
+    } else {
+        res.statusCode = 404
         res.end()
 
     }
-    if (req.method === "DELETE") {
-        let baseURL = "http://" + req.headers.host + "/"
-        let parsedUrl = new URL(req.url, baseURL)
-        let itemID = parsedUrl.searchParams.get("id");
-        console.log(itemID)
-        fs.readFile("file.json", "utf8", (err, data) => {
-            if (err) {
-                console.error(err)
-            }
-            let fileData = JSON.parse(data)
-            console.log(fileData.todos)
-
-
-
-            let newdata = fileData.todos.filter(function (itemz) {
-                return itemz.id != itemID
-            })
-            console.log(newdata)
-        })
-    } res.end()
-
 }
 )
 
