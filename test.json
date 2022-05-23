@@ -1,1 +1,12 @@
-{"todos":[{"id":1,"text":"Eat food"},{"email":"John@gmail.com","username":"johnd"}]}{"todos":[{"id":1,"text":"Eat food"},{"email":"John@gmail.com","username":"johnd"}]}
+{
+    "todos": [
+        {
+            "id": 1,
+            "text": "Eat food"
+        },
+        {
+            "email": "John@gmail.com",
+            "username": "johnd"
+        }
+    ]
+}
