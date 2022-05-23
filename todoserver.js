@@ -37,11 +37,16 @@ const app = http.createServer((req, res) => {
             })
             console.log(requestedPerson)
 
+
+
+            res.end(JSON.stringify(requestedPerson))
+
+
+
         })
 
 
-    } res.end()
-
+    }
     if (req.method === "POST") {
 
         req.on("data", (chunk) => {
