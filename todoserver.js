@@ -144,7 +144,12 @@ const app = http.createServer((req, res) => {
                 }
                 fileData[todoIndex] = todoItem
                 console.log(fileData)
+                const JsonfileData = JSON.stringify(fileData)
+                fs.writeFile("file.json", JsonfileData, (err) => {
+                    if (err) console.log(err)
+                })
             })
+
         })
         res.end()
     } else {
