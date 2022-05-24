@@ -1,5 +1,6 @@
 const http = require("http")
 const fs = require("fs")
+const crypto = require("crypto")
 const port = 4000
 const { URL } = require("url")
 const app = http.createServer((req, res) => {
@@ -52,7 +53,16 @@ const app = http.createServer((req, res) => {
         req.on("data", (chunk) => {
             const newData = chunk.toString()
             const parsednewData = JSON.parse(newData)
-
+            console.log(parsednewData)
+            /*
+            const parsedArray = [parsednewData]
+        
+            console.log(parsedArray)*/
+            const randomID = crypto.randomUUID({ disableEntrophyCache: true })
+            console.log(randomID)
+            /*
+            parsedArray.push({ "id": randomID })
+            console.log(parsedArray)*/
 
             fs.readFile("file.json", "utf8", (err, data) => {
                 if (err) {
@@ -60,7 +70,7 @@ const app = http.createServer((req, res) => {
                     return
                 }
                 const parsedData = JSON.parse(data)
-                parsedData.todos.push(parsednewData)
+                parsedData.push({ ...parsednewData, "id": randomID })
                 const newTodos = JSON.stringify(parsedData)
                 fs.writeFile("file.json", newTodos, (err) => {
                     if (err) console.log(err)
