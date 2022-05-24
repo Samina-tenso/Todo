@@ -152,6 +152,54 @@ const app = http.createServer((req, res) => {
 
         })
         res.end()
+
+    }
+    if (req.method === "PUT") {
+
+
+        let baseURL = "http://" + req.headers.host + "/"
+        let parsedUrl = new URL(req.url, baseURL)
+        let itemID = parsedUrl.searchParams.get("id");
+        console.log(itemID)
+
+        const randomID = crypto.randomUUID({ disableEntrophyCache: true })
+        console.log(randomID)
+
+        req.on("data", (chunk) => {
+            let newdata = JSON.parse(chunk)
+            console.log(newdata)
+
+            fs.readFile("file.json", "utf8", (err, data) => {
+                if (err) {
+                    console.error(err)
+                }
+                const fileData = JSON.parse(data)
+                console.log(fileData)
+
+
+                let todoIndex = fileData.findIndex(function (todoItem) {
+                    return todoItem.id = itemID
+
+                })
+                console.log(todoIndex)
+
+                newdata = { ...newdata, "id": randomID }
+                console.log(newdata)
+
+
+                fileData[todoIndex] = newdata
+
+                console.log(fileData)
+                const JsonfileData = JSON.stringify(fileData)
+                fs.writeFile("file.json", JsonfileData, (err) => {
+                    if (err) { console.log(err) }
+                })
+
+
+
+            })
+        })
+        res.end()
     } else {
         res.statusCode = 404
         res.end()
