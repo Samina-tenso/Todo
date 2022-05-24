@@ -107,14 +107,53 @@ const app = http.createServer((req, res) => {
         })
         res.end()
     }
+    if (req.method === "PATCH") {
 
-    else {
+        let baseURL = "http://" + req.headers.host + "/"
+        let parsedUrl = new URL(req.url, baseURL)
+        let itemID = parsedUrl.searchParams.get("id");
+        console.log(itemID)
+
+        req.on("data", (chunk) => {
+            const newdata = JSON.parse(chunk)
+            console.log(newdata)
+
+
+
+            fs.readFile("file.json", "utf8", (err, data) => {
+                if (err) {
+                    console.error(err)
+                }
+                let fileData = JSON.parse(data)
+                console.log(fileData)
+
+
+                let todoIndex = fileData.findIndex(function (todoItem) {
+                    return todoItem.id = itemID
+
+                })
+                console.log(todoIndex)
+
+
+
+                let todoItem = fileData[todoIndex]
+                console.log(todoItem)
+
+                if (newdata.text) {
+                    todoItem.text = newdata.text
+                }
+                fileData[todoIndex] = todoItem
+                console.log(fileData)
+            })
+        })
+        res.end()
+    } else {
         res.statusCode = 404
         res.end()
-
     }
-}
-)
+
+})
+
 
 app.listen(port, () => {
     console.log(`körs på ${port}`)
