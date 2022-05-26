@@ -79,15 +79,9 @@ const app = http.createServer((req, res) => {
             const newData = chunk.toString()
             const parsednewData = JSON.parse(newData)
             console.log(parsednewData)
-            /*
-            const parsedArray = [parsednewData]
-        
-            console.log(parsedArray)*/
+
             const randomID = crypto.randomUUID({ disableEntrophyCache: true })
             console.log(randomID)
-            /*
-            parsedArray.push({ "id": randomID })
-            console.log(parsedArray)*/
 
             fs.readFile("file.json", "utf8", (err, data) => {
                 if (err) {
