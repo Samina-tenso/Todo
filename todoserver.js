@@ -3,11 +3,26 @@ const fs = require("fs")
 const crypto = require("crypto")
 const port = 4000
 const { URL } = require("url")
-const { resolve } = require("path")
 const app = http.createServer((req, res) => {
-    res.setHeader("Access-Control-Allow-Credentials", "true");
+    const headers = {
+
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": ",HEAD, GET, PATCH, DELETE, OPTIONS, POST, PUT",
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+
+    }
+
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, DELETE, OPTIONS, POST, PUT");
+    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
+
+    if (req.method === "OPTIONS") {
+        res.writeHead(204, headers)
+        res.end()
+        return
+    }
+
 
 
 
@@ -212,6 +227,8 @@ const app = http.createServer((req, res) => {
 
                 fs.writeFile("file.json", JsonfileData, (err) => {
                     if (err) { console.log(err) }
+
+
                 })
 
 
