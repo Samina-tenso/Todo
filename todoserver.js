@@ -3,31 +3,44 @@ const fs = require("fs")
 const crypto = require("crypto")
 const port = 4000
 const { URL } = require("url")
+const { resolve } = require("path")
 const app = http.createServer((req, res) => {
     res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, DELETE, OPTIONS, POST, PUT");
+
+
+
     const items = req.url.split("/")
     console.log(items)
 
-    if (req.method === "GET" && items.length === 2) {
-        res.statusCode = 200
-        res.setHeader("Content-Type", "application/json")
+    if (req.method === "GET" && !items[1].includes("id")) {
+
+        res.writeHead(200, { "Content-Type": "application/json" });
+
         fs.readFile("file.json", "utf8", (err, data) => {
             if (err) {
                 console.error(err)
             }
-            res.end(data.toString())
+            res.write(data)
+            res.end()
         })
 
-    }
-    if (req.method === "GET" && items[1].includes("id")) {
+        return
+
+
+
+
+
+
+    } else if (req.method === "GET" && items[1].includes("id")) {
         let baseURL = "http://" + req.headers.host + "/"
         let parsedUrl = new URL(req.url, baseURL)
         let itemID = parsedUrl.searchParams.get("id");
         console.log(itemID)
         fs.readFile("file.json", "utf8", (err, data) => {
             if (err) {
-                return
+                console.log(error)
             }
             let todoData = JSON.parse(data)
             console.log(todoData)
@@ -38,17 +51,14 @@ const app = http.createServer((req, res) => {
             })
             console.log(requestedPerson)
 
-
-
-            res.end(JSON.stringify(requestedPerson))
-
+            res.write(JSON.stringify(requestedPerson))
+            res.end()
 
 
         })
+        return
 
-
-    }
-    if (req.method === "POST") {
+    } else if (req.method === "POST") {
 
         req.on("data", (chunk) => {
             const newData = chunk.toString()
@@ -80,8 +90,7 @@ const app = http.createServer((req, res) => {
         })
         res.end()
 
-    }
-    if (req.method === "DELETE") {
+    } else if (req.method === "DELETE") {
         let baseURL = "http://" + req.headers.host + "/"
         let parsedUrl = new URL(req.url, baseURL)
         let itemID = parsedUrl.searchParams.get("id");
@@ -106,8 +115,7 @@ const app = http.createServer((req, res) => {
             })
         })
         res.end()
-    }
-    if (req.method === "PATCH") {
+    } else if (req.method === "PATCH") {
 
         let baseURL = "http://" + req.headers.host + "/"
         let parsedUrl = new URL(req.url, baseURL)
@@ -145,13 +153,21 @@ const app = http.createServer((req, res) => {
                 fileData[todoIndex] = todoItem
                 console.log(fileData)
                 const JsonfileData = JSON.stringify(fileData)
+
+
                 fs.writeFile("file.json", JsonfileData, (err) => {
                     if (err) console.log(err)
+
+
                 })
+                res.write(JsonfileData)
+                res.end()
+
             })
 
         })
-        res.end()
+        return
+
 
     }
     if (req.method === "PUT") {
@@ -191,6 +207,9 @@ const app = http.createServer((req, res) => {
 
                 console.log(fileData)
                 const JsonfileData = JSON.stringify(fileData)
+
+
+
                 fs.writeFile("file.json", JsonfileData, (err) => {
                     if (err) { console.log(err) }
                 })
