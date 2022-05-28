@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 let htmlCode = "";
                 data.forEach((item) => {
                     htmlCode += `
-<div class='flex mb-4 items-center id=${item.id}'>
-   <p id=${item.id} class='w-full  text-grey-darkest'>${item.text}</p>
+<div class='flex mb-4 items-center'>
+   <p  class='w-full ${item.id} text-grey-darkest'>${item.text}</p>
    <button id=${item.id} onclick='edit(this.id)' class='flex-no-shrink p-2 ml-4 mr-2 border-2 rounded text-white text-grey bg-green-600'>Edit</button>
    <button id=${item.id} onclick='remove(this.id)'class='delete flex-no-shrink p-2 ml-2 border-2 rounded text-white bg-red-500'>Delete</button>
 </div>`;
@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
     getAllTodos()
+
 
 
 
@@ -64,29 +65,43 @@ const saveInd = document.getElementById("saveIndex")
 const addTask = document.getElementById("add-task-btn")
 const saveTask = document.getElementById("save-todo-btn")
 
-saveTask.addEventListener("click", (id) => {
-    console.log(saveInd.value)
-    basic = `http://localhost:4000/todos?id=${id}`
-    fetch(basic)
-    console.log("hi")
-    addTask.style.display = "block"
-    saveTask.style.display = "none"
-})
+
 function edit(id) {
-
-
-    const todo = document.querySelector(`p#${id}`)
-    console.log(todo.innerText)
-    saveInd.value = todo
-    console.log(todo)
-    text.value = todo.innerHTML
+    console.log(id)
+    const item = document.getElementsByClassName(id)
+    console.log(item[0].innerText)
+    saveInd.value = id
     console.log(saveInd)
-
+    text.value = item[0].innerHTML
+    console.log(text.value)
     addTask.style.display = "none"
     saveTask.style.display = "block"
 
+    saveTask.addEventListener("click", (id) => {
+        id = saveInd.value
+
+        console.log(id)
+
+        console.log(text.value)
+        basic = `http://localhost:4000/todos?id=${id}`
+        fetch(basic,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    text: text.value
+                }),
+
+            })
+        addTask.style.display = "block"
+        saveTask.style.display = "none"
+    })
 
 }
+
+//item[0].innerHTML = text.value
 
 
 

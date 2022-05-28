@@ -146,7 +146,7 @@ const app = http.createServer((req, res) => {
 
 
                 let todoIndex = fileData.findIndex(function (todoItem) {
-                    return todoItem.id = itemID
+                    return todoItem.id === itemID
 
                 })
                 console.log(todoIndex)
