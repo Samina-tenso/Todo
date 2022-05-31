@@ -40,25 +40,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    document.getElementById("add-task-btn").addEventListener("click", (e) => {
-        e.preventDefault()
-        const text = document.getElementById("text").value
-        fetch("http://localhost:4000/todos",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ "text": text })
-            })
-
-    })
 
 
 
 
 })
 
+document.getElementById("add-task-btn").addEventListener("click", (e) => {
+    e.preventDefault()
+    const text = document.getElementById("text").value
+    fetch("http://localhost:4000/todos",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "text": text })
+        })
+    location.reload()
+})
 
 
 const saveInd = document.getElementById("saveIndex")
@@ -97,11 +97,11 @@ function edit(id) {
             })
         addTask.style.display = "block"
         saveTask.style.display = "none"
-    })
 
+    })
+    text.value = ""
 }
 
-//item[0].innerHTML = text.value
 
 
 
@@ -115,7 +115,7 @@ function remove(id) {
 
         })
 
-
+    location.reload()
 }
 
 

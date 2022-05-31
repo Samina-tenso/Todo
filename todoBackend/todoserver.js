@@ -48,7 +48,11 @@ const app = http.createServer((req, res) => {
 
 
 
+
+
     } else if (req.method === "GET" && items[1].includes("id")) {
+        res.writeHead(200, { "Content-Type": "application/json" });
+
         let baseURL = "http://" + req.headers.host + "/"
         let parsedUrl = new URL(req.url, baseURL)
         let itemID = parsedUrl.searchParams.get("id");
@@ -123,6 +127,7 @@ const app = http.createServer((req, res) => {
                 if (err) console.log(err)
             })
         })
+        res.statusCode = 204
         res.end()
     } else if (req.method === "PATCH") {
 
