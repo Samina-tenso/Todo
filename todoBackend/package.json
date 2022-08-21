@@ -4,6 +4,7 @@
   "description": "",
   "main": "todoserver.js",
   "scripts": {
+    "start": "npm tun start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
