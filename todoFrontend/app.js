@@ -2,10 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const dbUrl = "http://localhost:4000/todos"
-
-
     function getAllTodos() {
-
         fetch(dbUrl)
             .then(res => res.json())
             .then(data => {
@@ -17,35 +14,15 @@ document.addEventListener("DOMContentLoaded", function () {
    <button id=${item.id} onclick='edit(this.id)' class='flex-no-shrink p-2 ml-4 mr-2 border-2 rounded text-white text-grey bg-green-600'>Edit</button>
    <button id=${item.id} onclick='remove(this.id)'class='delete flex-no-shrink p-2 ml-2 border-2 rounded text-white bg-red-500'>Delete</button>
 </div>`;
-
                     listBox.innerHTML = htmlCode;
-
-
                 })
-
             }).catch(err => {
                 console.error(err)
             })
 
-
     }
     getAllTodos()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 })
-
 document.getElementById("add-task-btn").addEventListener("click", (e) => {
     e.preventDefault()
     const text = document.getElementById("text").value
@@ -59,7 +36,6 @@ document.getElementById("add-task-btn").addEventListener("click", (e) => {
         })
     location.reload()
 })
-
 
 const saveInd = document.getElementById("saveIndex")
 const addTask = document.getElementById("add-task-btn")
@@ -76,12 +52,9 @@ function edit(id) {
     console.log(text.value)
     addTask.style.display = "none"
     saveTask.style.display = "block"
-
     saveTask.addEventListener("click", (id) => {
         id = saveInd.value
-
         console.log(id)
-
         console.log(text.value)
         basic = `http://localhost:4000/todos?id=${id}`
         fetch(basic,
@@ -93,22 +66,16 @@ function edit(id) {
                 body: JSON.stringify({
                     text: text.value
                 }),
-
             })
         addTask.style.display = "block"
         saveTask.style.display = "none"
-
     })
     text.value = ""
 }
 
-
-
-
 function remove(id) {
     console.log(id)
     basic = `http://localhost:4000/todos?id=${id}`
-
     fetch(basic,
         {
             method: "DELETE",
@@ -117,15 +84,3 @@ function remove(id) {
 
     location.reload()
 }
-
-
-
-
-/*
-
-}*/
-
-
-
-
-
